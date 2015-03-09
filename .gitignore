@@ -3,4 +3,5 @@ bin/
 notes/
 lib/
 unused/
-
+.classpath
+.project
