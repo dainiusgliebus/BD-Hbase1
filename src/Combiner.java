@@ -1,27 +1,35 @@
 import java.io.IOException;
-import java.util.Iterator;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
-import org.apache.hadoop.hbase.client.Put;
-import org.apache.hadoop.hbase.io.ImmutableBytesWritable;
-import org.apache.hadoop.hbase.mapreduce.TableReducer;
-import org.apache.hadoop.hbase.util.Bytes;
+import org.apache.hadoop.io.IntWritable;
+import org.apache.hadoop.io.LongWritable;
 import org.apache.hadoop.io.Text;
+import org.apache.hadoop.mapreduce.Reducer;
 
+public class Combiner extends Reducer<LongWritable, Text, LongWritable, Text> {
+	// <inputKey, inputValue, outKey, outValue
 
-public class Combiner extends TableReducer<ImmutableBytesWritable, ImmutableBytesWritable, ImmutableBytesWritable> {
-	// <KEYIN,VALUEIN,KEYOUT>
+	private Text result = new Text();
 
- public void reduce(ImmutableBytesWritable key, Iterable<ImmutableBytesWritable> values, Context context) throws IOException, InterruptedException {
-  int sum = 0;
-  
-  for (ImmutableBytesWritable v : values){
-		sum++;
-		//sum += v.get();
+	public void reduce(LongWritable key, Iterable<Text> values, Context context) throws IOException, InterruptedException {
+
+		List<String> list = new ArrayList();
+
+		String tmp = "";
+
+		for (Text val : values) {
+			list.add(val.toString());
+		}
+
+		Collections.sort(list);
+
+		for (String rev : list) {
+			tmp += rev + " ";
+		}
+
+		result.set(tmp);
+		context.write(key, result);
 	}
-  
-  Put put = new Put(key.get());
-  put.add(Bytes.toBytes("A"), key.get(), Bytes.toBytes(sum));
-  
-  context.write(key, put);
- }
 }

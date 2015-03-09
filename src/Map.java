@@ -14,7 +14,7 @@ import org.apache.hadoop.io.LongWritable;
 import org.apache.hadoop.io.Text;
 
 public class Map extends
-		TableMapper<LongWritable, LongWritable> {
+		TableMapper<LongWritable, Text> {
 	// <KEYOUT,VALUEOUT>
 	private Text rev = new Text();
 	private Date startDate = null;
@@ -22,8 +22,7 @@ public class Map extends
 	private SimpleDateFormat dateFormat = new SimpleDateFormat(
 			"yyyy-MM-dd'T'HH:mm:ss'Z'");
 
-	public void map(ImmutableBytesWritable key, Result value, Context context)
-			throws IOException, InterruptedException {
+	public void map(ImmutableBytesWritable key, Result value, Context context) throws IOException, InterruptedException {
 
 		try {
 			// startDate =
@@ -42,10 +41,11 @@ public class Map extends
 
 		if (ts.after(startDate) && ts.before(endDate)) {
 			byte[] article_id = Arrays.copyOfRange(key.get(), 0, 8);
-			byte[] revision_id = Arrays.copyOfRange(key.get(), 8,
-					key.getLength());
+			byte[] revision_id = Arrays.copyOfRange(key.get(), 8, key.getLength());
+			
+			rev.set(Bytes.toLong(revision_id) + "");
 
-			context.write(new LongWritable(Bytes.toLong(article_id)),new LongWritable(Bytes.toLong(revision_id)));
+			context.write(new LongWritable(Bytes.toLong(article_id)), rev);
 		}
 	}
 }

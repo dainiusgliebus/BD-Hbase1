@@ -37,13 +37,14 @@ public class Counter extends Configured implements Tool {
 		scan.setCacheBlocks(false);
 		// Always set this to false for MR jobs!
 
-		TableMapReduceUtil.initTableMapperJob("BD4Project2Sample", scan, Map.class, LongWritable.class, LongWritable.class, job);
-		//job.setCombinerClass(Combiner.class);
+		TableMapReduceUtil.initTableMapperJob("BD4Project2Sample", scan, Map.class, LongWritable.class, Text.class, job);
+		
+		job.setCombinerClass(Combiner.class);
 
 		job.setNumReduceTasks(1);
 		job.setReducerClass(Reduce.class);
 		
-		job.setOutputKeyClass(IntWritable.class);
+		job.setOutputKeyClass(LongWritable.class);
 		job.setOutputValueClass(Text.class);
 		job.setOutputFormatClass(TextOutputFormat.class);
 		

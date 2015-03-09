@@ -8,12 +8,12 @@ import org.apache.hadoop.io.LongWritable;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Reducer;
 
-public class Reduce extends Reducer<LongWritable, LongWritable, LongWritable, Text> {
+public class Reduce extends Reducer<LongWritable, Text, LongWritable, Text> {
 	// <inputKey, inputValue, outKey, outValue
 
 	private Text result = new Text();
 
-	public void reduce(LongWritable key, Iterable<LongWritable> values, Context context)
+	public void reduce(LongWritable key, Iterable<Text> values, Context context)
 			throws IOException, InterruptedException {
 
 		List<String> list = new ArrayList();
@@ -21,7 +21,7 @@ public class Reduce extends Reducer<LongWritable, LongWritable, LongWritable, Te
 		 int sum = 0; 
 		 String tmp = "";
 		 
-		 for (LongWritable val : values) { 
+		 for (Text val : values) { 
 			 list.add(val.toString()); 
 			 sum++;
 		 }
