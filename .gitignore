@@ -1,0 +1,6 @@
+*.jar
+bin/
+notes/
+lib/
+unused/
+
