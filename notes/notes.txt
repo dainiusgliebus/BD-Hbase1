@@ -1,0 +1,10 @@
+./hdfs-dfs.sh -rm -r /user/1101651g/temp      ------- delete logs
+./hdfs-dfs.sh -expunge                        ------- empty trash
+
+
+-copyToLocal [-p] [-ignoreCrc] [-crc] <src> ... <localdst> :
+  Identical to the -get command.
+
+  ./hdfs-dfs.sh -ls /user/1101651g/
+  
+  "enwiki-20080103-sample.txt"
