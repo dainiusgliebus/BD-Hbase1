@@ -29,7 +29,7 @@ public class Combiner extends Reducer<LongWritable, Text, LongWritable, Text> {
 			tmp += rev + " ";
 		}
 
-		result.set(tmp);
+		result.set(tmp.trim());
 		context.write(key, result);
 	}
 }

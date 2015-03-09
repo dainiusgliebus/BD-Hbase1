@@ -17,24 +17,28 @@ public class Reduce extends Reducer<LongWritable, Text, LongWritable, Text> {
 			throws IOException, InterruptedException {
 
 		List<String> list = new ArrayList();
-		 
-		 int sum = 0; 
-		 String tmp = "";
-		 
-		 for (Text val : values) { 
-			 list.add(val.toString()); 
-			 sum++;
-		 }
 
-		 Collections.sort(list);
-		 
-		 for (String rev : list) { 
-			 tmp += rev + " "; 
-		 }
-		 
-		 result.set(sum + " " + tmp);
-		 
-		 context.write(key, result);
+		int sum = 0;
+		String tmp = "";
+
+		for (Text val : values) {
+			String array[] = val.toString().split(" ");
+			
+			for (int i = 0; i < array.length; i++) {
+				list.add(array[i]);
+				sum++;
+			}
+		}
+
+		Collections.sort(list);
+
+		for (String rev : list) {
+			tmp += rev + " ";
+		}
+
+		result.set(sum + " " + tmp);
+
+		context.write(key, result);
 
 	}
 }
